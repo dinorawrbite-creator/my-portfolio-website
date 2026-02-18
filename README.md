@@ -2,6 +2,10 @@ My Portfolio Website
 Welcome to my very first portfolio website!
 This project marks my introduction to web development, design, and building something fully from scratch. I wanted my first project to feel fun, nostalgic, and personal so I built a Windows 98–themed interactive desktop, complete with folders, icons, and even a space‑shooter game running in the background.
 
+![Beginner](https://img.shields.io/badge/Level-Beginner-green)
+![Learning](https://img.shields.io/badge/Currently%20Learning-JavaScript-yellow)
+![Open to Help](https://img.shields.io/badge/Open%20to-Collaboration-blue)
+
 This site is still a work in progress, and I’ll continue updating it as I learn more and expand my skills.
 
 Live Website:  
