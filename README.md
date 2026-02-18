@@ -1,6 +1,6 @@
-My Portfolio Website — Win98 Edition
+My Portfolio Website
 Welcome to my very first portfolio website!
-This project marks my introduction to web development, design, and building something fully from scratch. I wanted my first project to feel fun, nostalgic, and personal — so I built a Windows 98–themed interactive desktop, complete with folders, icons, and even a space‑shooter game running in the background.
+This project marks my introduction to web development, design, and building something fully from scratch. I wanted my first project to feel fun, nostalgic, and personal so I built a Windows 98–themed interactive desktop, complete with folders, icons, and even a space‑shooter game running in the background.
 
 This site is still a work in progress, and I’ll continue updating it as I learn more and expand my skills.
 
