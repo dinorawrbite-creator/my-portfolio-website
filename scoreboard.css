@@ -1,0 +1,306 @@
+/* ============================================
+   SCOREBOARD.CSS — Win98 Game Over Scoreboard
+   Add to your <head>:
+   <link rel="stylesheet" href="scoreboard.css">
+   ============================================ */
+
+#scoreboard-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 99998;
+}
+
+#scoreboard-window {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 360px;
+  height: fit-content;
+  background: #c0c0c0;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #808080;
+  border-bottom: 2px solid #808080;
+  box-shadow: 2px 2px 0 #000, inset 1px 1px 0 #dfdfdf;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 8px;
+  z-index: 99999;
+  user-select: none;
+}
+
+/* Title bar */
+#scoreboard-titlebar {
+  background: linear-gradient(to right, #000080, #1084d0);
+  color: #fff;
+  font-size: 9px;
+  padding: 4px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: default;
+}
+
+#scoreboard-titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#scoreboard-titlebar img {
+  width: 14px;
+  height: 14px;
+  image-rendering: pixelated;
+}
+
+#scoreboard-close {
+  background: #c0c0c0;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 1px solid #808080;
+  border-bottom: 1px solid #808080;
+  width: 16px;
+  height: 14px;
+  font-size: 9px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  line-height: 1;
+}
+
+#scoreboard-close:active {
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+
+/* Body */
+#scoreboard-body {
+  padding: 12px;
+}
+
+/* GAME OVER banner */
+#scoreboard-gameover {
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 8px;
+  background: #000;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+
+#scoreboard-gameover-text {
+  display: block;
+  font-size: 16px;
+  color: #ff0000;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 #800000;
+  margin-bottom: 6px;
+}
+
+#scoreboard-final-score {
+  display: block;
+  font-size: 9px;
+  color: #ffff00;
+}
+
+/* Divider */
+.scoreboard-divider {
+  border: none;
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #fff;
+  margin: 8px 0;
+}
+
+/* Initials entry */
+#scoreboard-entry-section {
+  background: #fff;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+#scoreboard-entry-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #000080;
+}
+
+#scoreboard-entry-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+#scoreboard-initials {
+  width: 68px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 6px;
+  padding: 3px 5px;
+  background: #fff;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  color: #000080;
+  outline: none;
+}
+
+#scoreboard-submit-btn {
+  background: #c0c0c0;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #808080;
+  border-bottom: 2px solid #808080;
+  padding: 5px 10px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 7px;
+  cursor: pointer;
+  color: #000;
+}
+
+#scoreboard-submit-btn:active {
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  padding: 6px 9px 4px 11px;
+}
+
+#scoreboard-submit-btn:disabled {
+  color: #808080;
+  cursor: default;
+}
+
+#scoreboard-entry-msg {
+  font-size: 7px;
+  color: #000080;
+  margin-top: 5px;
+  min-height: 12px;
+}
+
+/* Leaderboard */
+#scoreboard-list-section {
+  margin-bottom: 10px;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  overflow: hidden;
+}
+
+#scoreboard-list-header {
+  background: #000080;
+  color: #fff;
+  display: grid;
+  grid-template-columns: 28px 1fr 80px;
+  padding: 4px 6px;
+  font-size: 7px;
+  letter-spacing: 0.5px;
+  gap: 4px;
+}
+
+#scoreboard-list {
+  max-height: 180px;
+  overflow-y: auto;
+  background: #fff;
+}
+
+.scoreboard-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 80px;
+  padding: 4px 6px;
+  font-size: 8px;
+  border-bottom: 1px solid #ececec;
+  gap: 4px;
+  align-items: center;
+}
+
+.scoreboard-row:last-child {
+  border-bottom: none;
+}
+
+.scoreboard-row.highlight {
+  background: #000080;
+  color: #ffff00;
+}
+
+.sb-rank { color: #808080; }
+.scoreboard-row.rank-1 .sb-rank { color: #b8860b; font-size: 10px; }
+.scoreboard-row.rank-2 .sb-rank { color: #606060; font-size: 10px; }
+.scoreboard-row.rank-3 .sb-rank { color: #8b4513; font-size: 10px; }
+.scoreboard-row.rank-1 { background: #fffde7; }
+
+.sb-name  { letter-spacing: 3px; color: #000080; }
+.sb-score { text-align: right; font-family: 'Courier New', monospace; font-size: 9px; font-weight: bold; }
+.scoreboard-row.highlight .sb-name,
+.scoreboard-row.highlight .sb-score,
+.scoreboard-row.highlight .sb-rank { color: #ffff00; }
+
+#scoreboard-empty {
+  text-align: center;
+  padding: 16px;
+  color: #808080;
+  font-size: 7px;
+  background: #fff;
+}
+
+/* Buttons */
+#scoreboard-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.scoreboard-btn {
+  background: #c0c0c0;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #808080;
+  border-bottom: 2px solid #808080;
+  padding: 5px 14px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 7px;
+  cursor: pointer;
+  color: #000;
+  min-width: 80px;
+  text-align: center;
+}
+
+.scoreboard-btn:active {
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  padding: 6px 13px 4px 15px;
+}
+
+/* Win98 scrollbar */
+#scoreboard-list::-webkit-scrollbar { width: 16px; }
+#scoreboard-list::-webkit-scrollbar-track { background: #c0c0c0; }
+#scoreboard-list::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 1px solid #808080;
+  border-bottom: 1px solid #808080;
+}

@@ -8,6 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
+    
+    .hidden {
+    display: none !important;
+    }
+
     body {
       margin: 0;
       background-image: url('https://uploads-ssl.webflow.com/616db9e8c16e87733de992ab/616dbfaf9b209b40494331dd_ezgif-7-02bd0197f34b.gif');
@@ -285,6 +290,7 @@
       border-top: 1px solid white;
     }
   </style>
+  <link rel="stylesheet" href="scoreboard.css">
 </head>
 
 <body>
@@ -394,18 +400,19 @@ Your ship will blink when invincible after taking damage.
         </div>
         <div class="file-list">
           <div class="file-item" onclick="showTextContent('contactWin', 'email')">
-            <img src="https://win98icons.alexmeub.com/icons/png/mail_inbox-0.png">
-            <div class="file-item-name">email.txt</div>
+            <img src="https://win98icons.alexmeub.com/icons/png/envelope_closed-0.png">
+            <div class="file-item-name">terrell.willis@outlook.com</div>
           </div>
           <div class="file-item" onclick="showTextContent('contactWin', 'github')">
             <img src="https://zipplie.github.io/zipplie-site/img/github.png">
-            <div class="file-item-name">github.lnk</div>
+            <div class="file-item-name">https://github.com/dinorawrbite-creator</div>
           </div>
           <div class="file-item" onclick="showTextContent('contactWin', 'location')" style="display: none;">
             <img src="https://win98icons.alexmeub.com/icons/png/globe-2.png">
             <div class="file-item-name">location.txt</div>
           </div>
-          <div class="file-item" onclick="showTextContent('contactWin', 'social')">
+          
+          <div class="file-item hidden" onclick="showTextContent('contactWin', 'social')">
             <img src="https://win98icons.alexmeub.com/icons/png/users-2.png">
             <div class="file-item-name">social.txt</div>
           </div>
@@ -1029,7 +1036,8 @@ function update(delta) {
 
       if (lives <= 0) {
         gameOver = true;
-        canRestart = true;
+        canRestart = false;      // scoreboard handles restart now
+        showScoreboard(score);   // ← the only new line you need
       }
     }
   });
@@ -1108,6 +1116,7 @@ function gameLoop(timestamp) {
 }
 requestAnimationFrame(gameLoop);
 </script>
+<script src="scoreboard.js"></script>
 
 </body>
 </html>
