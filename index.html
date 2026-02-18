@@ -31,7 +31,6 @@
       width: 70px;
       text-align: center;
       color: white;
-      cursor: move;
       padding: 5px;
       text-shadow: 2px 2px 0px black;
       font-family: 'Press Start 2P', cursive;
@@ -65,7 +64,6 @@
     }
 
     .title-bar {
-      cursor: move;
       user-select: none;
     }
 
@@ -76,40 +74,62 @@
       overflow-y: auto;
     }
 
-    /* File explorer styling */
-    .file-list {
+    /* File explorer styling - LIST VIEW */
+    .file-list-header {
       display: flex;
-      flex-wrap: wrap;
-      padding: 10px;
-      gap: 10px;
+      background: #c0c0c0;
+      border-bottom: 2px solid #808080;
+      padding: 4px 8px;
+      font-size: 7px;
+      font-weight: bold;
+      gap: 8px;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .header-icon {
+      width: 16px;
+    }
+
+    .header-name {
+      flex: 1;
+    }
+
+    .file-list {
+      display: block;
+      background: white;
     }
 
     .file-item {
-      width: 80px;
-      text-align: center;
-      cursor: pointer;
-      padding: 5px;
+      display: flex;
+      align-items: center;
+      padding: 3px 8px;
+      gap: 8px;
       border: 1px solid transparent;
     }
 
     .file-item:hover {
       background: #000080;
       color: white;
-      border: 1px dotted white;
+    }
+
+    .file-item.selected {
+      background: #000080;
+      color: white;
     }
 
     .file-item img {
-      width: 32px;
-      height: 32px;
-      margin-bottom: 5px;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
     }
 
     .file-item-name {
-      font-size: 7px;
-      word-wrap: break-word;
+      font-size: 8px;
       font-family: 'Press Start 2P', cursive;
       line-height: 1.4;
-      margin-top: 3px;
+      flex: 1;
     }
 
     /* Text file content view */
@@ -173,7 +193,6 @@
       gap: 8px;
       background: #c0c0c0;
       border: 2px outset #c0c0c0;
-      cursor: pointer;
       user-select: none;
     }
 
@@ -242,7 +261,6 @@
 
     .start-menu-item {
       padding: 8px 40px 8px 12px;
-      cursor: pointer;
       font-size: 8px;
       display: flex;
       align-items: center;
@@ -304,21 +322,26 @@
     </div>
     <div class="toolbar">
       <button onclick="showFolderView('aboutWin')">Folder View</button>
-      <button onclick="showTextContent('aboutWin', 'about')">View File</button>
     </div>
     <div class="window-body">
-      <div class="file-list" id="aboutWin-folder">
-        <div class="file-item" onclick="showTextContent('aboutWin', 'about')">
-          <img src="https://win98icons.alexmeub.com/icons/png/notepad-0.png">
-          <div class="file-item-name">readme.txt</div>
+      <div id="aboutWin-folder">
+        <div class="file-list-header">
+          <div class="header-icon"></div>
+          <div class="header-name">Name</div>
         </div>
-        <div class="file-item" onclick="showTextContent('aboutWin', 'skills')">
-          <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png">
-          <div class="file-item-name">skills.txt</div>
-        </div>
-        <div class="file-item" onclick="showTextContent('aboutWin', 'hobbies')">
-          <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-1.png">
-          <div class="file-item-name">hobbies.txt</div>
+        <div class="file-list">
+          <div class="file-item" onclick="showTextContent('aboutWin', 'about')">
+            <img src="https://win98icons.alexmeub.com/icons/png/notepad-0.png">
+            <div class="file-item-name">readme.txt</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('aboutWin', 'skills')">
+            <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png">
+            <div class="file-item-name">skills.txt</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('aboutWin', 'hobbies')">
+            <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-1.png">
+            <div class="file-item-name">hobbies.txt</div>
+          </div>
         </div>
       </div>
       <div class="text-content" id="aboutWin-text" style="display: none;"></div>
@@ -328,7 +351,7 @@
   <!-- Quake Game Window -->
   <div class="window" id="quakeWin">
     <div class="title-bar">
-      <div class="title-bar-text">Quake Clone - Space Shooter</div>
+      <div class="title-bar-text">GAMES</div>
       <div class="title-bar-controls">
         <button aria-label="Minimize" onclick="minimizeWindow('quakeWin')"></button>
         <button aria-label="Close" onclick="closeWindow('quakeWin')"></button>
@@ -363,22 +386,28 @@ Your ship will blink when invincible after taking damage.
       <button onclick="showFolderView('contactWin')">Folder View</button>
     </div>
     <div class="window-body">
-      <div class="file-list" id="contactWin-folder">
-        <div class="file-item" onclick="showTextContent('contactWin', 'email')">
-          <img src="https://win98icons.alexmeub.com/icons/png/mail_inbox-0.png">
-          <div class="file-item-name">email.txt</div>
+      <div id="contactWin-folder">
+        <div class="file-list-header">
+          <div class="header-icon"></div>
+          <div class="header-name">Name</div>
         </div>
-        <div class="file-item" onclick="showTextContent('contactWin', 'github')">
-          <img src="https://win98icons.alexmeub.com/icons/png/internet_connection_wiz-3.png">
-          <div class="file-item-name">github.lnk</div>
-        </div>
-        <div class="file-item" onclick="showTextContent('contactWin', 'location')">
-          <img src="https://win98icons.alexmeub.com/icons/png/globe-2.png">
-          <div class="file-item-name">location.txt</div>
-        </div>
-        <div class="file-item" onclick="showTextContent('contactWin', 'social')">
-          <img src="https://win98icons.alexmeub.com/icons/png/users-2.png">
-          <div class="file-item-name">social.txt</div>
+        <div class="file-list">
+          <div class="file-item" onclick="showTextContent('contactWin', 'email')">
+            <img src="https://win98icons.alexmeub.com/icons/png/mail_inbox-0.png">
+            <div class="file-item-name">email.txt</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('contactWin', 'github')">
+            <img src="https://zipplie.github.io/zipplie-site/img/github.png">
+            <div class="file-item-name">github.lnk</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('contactWin', 'location')" style="display: none;">
+            <img src="https://win98icons.alexmeub.com/icons/png/globe-2.png">
+            <div class="file-item-name">location.txt</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('contactWin', 'social')">
+            <img src="https://win98icons.alexmeub.com/icons/png/users-2.png">
+            <div class="file-item-name">social.txt</div>
+          </div>
         </div>
       </div>
       <div class="text-content" id="contactWin-text" style="display: none;"></div>
@@ -398,22 +427,28 @@ Your ship will blink when invincible after taking damage.
       <button onclick="showFolderView('projectsWin')">Folder View</button>
     </div>
     <div class="window-body">
-      <div class="file-list" id="projectsWin-folder">
-        <div class="file-item" onclick="showTextContent('projectsWin', 'project1')">
-          <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
-          <div class="file-item-name">Project_1</div>
+      <div id="projectsWin-folder">
+        <div class="file-list-header">
+          <div class="header-icon"></div>
+          <div class="header-name">Name</div>
         </div>
-        <div class="file-item" onclick="showTextContent('projectsWin', 'project2')">
-          <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
-          <div class="file-item-name">Project_2</div>
-        </div>
-        <div class="file-item" onclick="showTextContent('projectsWin', 'project3')">
-          <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
-          <div class="file-item-name">Project_3</div>
-        </div>
-        <div class="file-item" onclick="showTextContent('projectsWin', 'wip')">
-          <img src="https://win98icons.alexmeub.com/icons/png/tools-0.png">
-          <div class="file-item-name">WIP.txt</div>
+        <div class="file-list">
+          <div class="file-item" onclick="showTextContent('projectsWin', 'project1')">
+            <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
+            <div class="file-item-name">Project_1</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('projectsWin', 'project2')">
+            <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
+            <div class="file-item-name">Project_2</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('projectsWin', 'project3')">
+            <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
+            <div class="file-item-name">Project_3</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('projectsWin', 'wip')">
+            <img src="https://win98icons.alexmeub.com/icons/png/tools-0.png">
+            <div class="file-item-name">WIP.txt</div>
+          </div>
         </div>
       </div>
       <div class="text-content" id="projectsWin-text" style="display: none;"></div>
@@ -432,7 +467,7 @@ Your ship will blink when invincible after taking damage.
 
   <!-- START MENU -->
   <div class="start-menu" id="startMenu">
-    <div class="start-menu-sidebar">Windows 98</div>
+    <div class="start-menu-sidebar">DinoRawR</div>
     <div class="start-menu-items">
       <div class="start-menu-item">
         <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
@@ -509,7 +544,7 @@ Interests:
   email: `EMAIL CONTACT
 =============
 
-yourname@example.com
+Dinorawrbite@gmail.com
 
 Feel free to reach out for:
 - Project collaborations
@@ -522,7 +557,7 @@ I typically respond within 24-48 hours.`,
 ==============
 
 Visit my GitHub:
-github.com/yourname
+https://github.com/dinorawrbite-creator
 
 Check out my repositories for:
 - Open source contributions
@@ -727,7 +762,7 @@ function bringToFront(win) {
 function showFolderView(winId) {
   const folder = document.getElementById(winId + '-folder');
   const text = document.getElementById(winId + '-text');
-  if (folder) folder.style.display = 'flex';
+  if (folder) folder.style.display = 'block';
   if (text) text.style.display = 'none';
 }
 
