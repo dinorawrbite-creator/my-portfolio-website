@@ -1,0 +1,1145 @@
+<!-- Test Deploy-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Win98 Site</title>
+  <link rel="stylesheet" href="https://unpkg.com/98.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    
+    .hidden {
+    display: none !important;
+    }
+
+    body {
+      margin: 0;
+      background-image: url('https://uploads-ssl.webflow.com/616db9e8c16e87733de992ab/616dbfaf9b209b40494331dd_ezgif-7-02bd0197f34b.gif');
+      background-size: cover;
+      font-family: 'Press Start 2P', cursive;
+      overflow: hidden;
+    }
+    
+    /* Override 98.css fonts with pixel font */
+    .window, .title-bar, .title-bar-text, button, .window-body {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 8px;
+      line-height: 1.6;
+    }
+    
+    .title-bar-text {
+      font-size: 10px;
+    }
+
+    .desktop-icon {
+      position: absolute;
+      width: 70px;
+      text-align: center;
+      color: white;
+      padding: 5px;
+      text-shadow: 2px 2px 0px black;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 8px;
+      line-height: 1.2;
+      user-select: none;
+    }
+
+    .desktop-icon.selected {
+      background: rgba(0, 0, 128, 0.5);
+      border: 1px dotted white;
+    }
+
+    .desktop-icon img {
+      width: 38px;
+      height: 38px;
+      pointer-events: none;
+    }
+
+    .window {
+      position: absolute;
+      top: 120px;
+      left: 120px;
+      display: none;
+      width: 450px;
+      z-index: 1;
+    }
+
+    .window.active {
+      z-index: 1000;
+    }
+
+    .title-bar {
+      user-select: none;
+    }
+
+    .window-body {
+      background: white;
+      padding: 0;
+      height: 300px;
+      overflow-y: auto;
+    }
+
+    /* File explorer styling - LIST VIEW */
+    .file-list-header {
+      display: flex;
+      background: #c0c0c0;
+      border-bottom: 2px solid #808080;
+      padding: 4px 8px;
+      font-size: 7px;
+      font-weight: bold;
+      gap: 8px;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .header-icon {
+      width: 16px;
+    }
+
+    .header-name {
+      flex: 1;
+    }
+
+    .file-list {
+      display: block;
+      background: white;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      padding: 3px 8px;
+      gap: 8px;
+      border: 1px solid transparent;
+    }
+
+    .file-item:hover {
+      background: #000080;
+      color: white;
+    }
+
+    .file-item.selected {
+      background: #000080;
+      color: white;
+    }
+
+    .file-item img {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .file-item-name {
+      font-size: 8px;
+      font-family: 'Press Start 2P', cursive;
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    /* Text file content view */
+    .text-content {
+      padding: 10px;
+      font-family: 'Press Start 2P', cursive;
+      white-space: pre-wrap;
+      font-size: 8px;
+      line-height: 1.6;
+    }
+
+    #gameCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url("https://cdnb.artstation.com/p/assets/images/images/014/665/033/original/yargon-kerman-webp-net-gifmaker-39.gif?1544919451");
+      background-size: cover;
+      z-index: -1;
+    }
+
+    /* Toolbar for windows */
+    .toolbar {
+      border-bottom: 1px solid #808080;
+      padding: 2px;
+      background: #c0c0c0;
+    }
+
+    .toolbar button {
+      margin: 2px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 7px;
+      padding: 4px 8px;
+    }
+
+    /* TASKBAR */
+    .taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      background: #c0c0c0;
+      border-top: 2px solid white;
+      display: flex;
+      align-items: center;
+      padding: 0 4px;
+      z-index: 10000;
+      box-shadow: inset 1px 1px 0 white, inset -1px -1px 0 #808080;
+    }
+
+    .start-button {
+      height: 32px;
+      padding: 0 20px 0 8px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #c0c0c0;
+      border: 2px outset #c0c0c0;
+      user-select: none;
+    }
+
+    .start-button:active {
+      border-style: inset;
+    }
+
+    .start-button img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .taskbar-items {
+      flex: 1;
+      display: flex;
+      gap: 4px;
+      margin-left: 8px;
+    }
+
+    .taskbar-clock {
+      height: 32px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      border: 2px inset #c0c0c0;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 9px;
+      background: white;
+    }
+
+    /* START MENU */
+    .start-menu {
+      position: fixed;
+      bottom: 42px;
+      left: 4px;
+      width: 250px;
+      background: #c0c0c0;
+      border: 2px outset #c0c0c0;
+      display: none;
+      z-index: 10001;
+      box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .start-menu.open {
+      display: block;
+    }
+
+    .start-menu-sidebar {
+      background: #000080;
+      color: white;
+      padding: 8px;
+      font-size: 18px;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      float: left;
+      height: 300px;
+      display: flex;
+      align-items: flex-end;
+      font-weight: bold;
+    }
+
+    .start-menu-items {
+      margin-left: 32px;
+      padding: 8px 0;
+    }
+
+    .start-menu-item {
+      padding: 8px 40px 8px 12px;
+      font-size: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .start-menu-item:hover {
+      background: #000080;
+      color: white;
+    }
+
+    .start-menu-item img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .start-menu-separator {
+      height: 2px;
+      background: #808080;
+      margin: 4px 8px;
+      border-top: 1px solid white;
+    }
+  </style>
+  <link rel="stylesheet" href="scoreboard.css">
+</head>
+
+<body>
+
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- Desktop Icons -->
+  <div class="desktop-icon" style="top: 20px; left: 20px;" data-icon="about">
+    <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer_cool-0.png">
+    <div>About Me</div>
+  </div>
+
+  <div class="desktop-icon" style="top: 120px; left: 20px;" data-icon="games">
+    <img src="https://win98icons.alexmeub.com/icons/png/game_hearts.png">
+    <div>GAMES</div>
+  </div>
+
+  <div class="desktop-icon" style="top: 220px; left: 20px;" data-icon="contact">
+    <img src="https://win98icons.alexmeub.com/icons/png/users-2.png">
+    <div>Contact</div>
+  </div>
+
+  <div class="desktop-icon" style="top: 320px; left: 20px;" data-icon="projects">
+    <img src="https://win98icons.alexmeub.com/icons/png/defragment-0.png">
+    <div>Projects</div>
+  </div>
+
+  <!-- About Window -->
+  <div class="window" id="aboutWin">
+    <div class="title-bar">
+      <div class="title-bar-text">About Me</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" onclick="minimizeWindow('aboutWin')"></button>
+        <button aria-label="Close" onclick="closeWindow('aboutWin')"></button>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button onclick="showFolderView('aboutWin')">Folder View</button>
+    </div>
+    <div class="window-body">
+      <div id="aboutWin-folder">
+        <div class="file-list-header">
+          <div class="header-icon"></div>
+          <div class="header-name">Name</div>
+        </div>
+        <div class="file-list">
+          <div class="file-item" onclick="showTextContent('aboutWin', 'about')">
+            <img src="https://win98icons.alexmeub.com/icons/png/notepad-0.png">
+            <div class="file-item-name">readme.txt</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('aboutWin', 'skills')">
+            <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png">
+            <div class="file-item-name">skills.txt</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('aboutWin', 'hobbies')">
+            <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-1.png">
+            <div class="file-item-name">hobbies.txt</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-content" id="aboutWin-text" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- Quake Game Window -->
+  <div class="window" id="quakeWin">
+    <div class="title-bar">
+      <div class="title-bar-text">GAMES</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" onclick="minimizeWindow('quakeWin')"></button>
+        <button aria-label="Close" onclick="closeWindow('quakeWin')"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <div class="text-content">
+The space shooter game is running in the background!
+
+Controls:
+← → Arrow keys to move
+SPACE to shoot
+ENTER to restart after game over
+
+The game runs behind the desktop interface - click outside this window to play!
+
+Your ship will blink when invincible after taking damage.
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Window -->
+  <div class="window" id="contactWin">
+    <div class="title-bar">
+      <div class="title-bar-text">Contact Info</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" onclick="minimizeWindow('contactWin')"></button>
+        <button aria-label="Close" onclick="closeWindow('contactWin')"></button>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button onclick="showFolderView('contactWin')">Folder View</button>
+    </div>
+    <div class="window-body">
+      <div id="contactWin-folder">
+        <div class="file-list-header">
+          <div class="header-icon"></div>
+          <div class="header-name">Name</div>
+        </div>
+        <div class="file-list">
+          <div class="file-item" onclick="showTextContent('contactWin', 'email')">
+            <img src="https://win98icons.alexmeub.com/icons/png/envelope_closed-0.png">
+            <div class="file-item-name">terrell.willis@outlook.com</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('contactWin', 'github')">
+            <img src="https://zipplie.github.io/zipplie-site/img/github.png">
+            <div class="file-item-name">https://github.com/dinorawrbite-creator</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('contactWin', 'location')" style="display: none;">
+            <img src="https://win98icons.alexmeub.com/icons/png/globe-2.png">
+            <div class="file-item-name">location.txt</div>
+          </div>
+          
+          <div class="file-item hidden" onclick="showTextContent('contactWin', 'social')">
+            <img src="https://win98icons.alexmeub.com/icons/png/users-2.png">
+            <div class="file-item-name">social.txt</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-content" id="contactWin-text" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- Projects Window -->
+  <div class="window" id="projectsWin">
+    <div class="title-bar">
+      <div class="title-bar-text">My Projects</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" onclick="minimizeWindow('projectsWin')"></button>
+        <button aria-label="Close" onclick="closeWindow('projectsWin')"></button>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button onclick="showFolderView('projectsWin')">Folder View</button>
+    </div>
+    <div class="window-body">
+      <div id="projectsWin-folder">
+        <div class="file-list-header">
+          <div class="header-icon"></div>
+          <div class="header-name">Name</div>
+        </div>
+        <div class="file-list">
+          <div class="file-item" onclick="showTextContent('projectsWin', 'project1')">
+            <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
+            <div class="file-item-name">Project_1</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('projectsWin', 'project2')">
+            <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
+            <div class="file-item-name">Project_2</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('projectsWin', 'project3')">
+            <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
+            <div class="file-item-name">Project_3</div>
+          </div>
+          <div class="file-item" onclick="showTextContent('projectsWin', 'wip')">
+            <img src="https://win98icons.alexmeub.com/icons/png/tools-0.png">
+            <div class="file-item-name">WIP.txt</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-content" id="projectsWin-text" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- TASKBAR -->
+  <div class="taskbar">
+    <div class="start-button" onclick="toggleStartMenu()">
+      <img src="https://win98icons.alexmeub.com/icons/png/windows-0.png">
+      <span>Start</span>
+    </div>
+    <div class="taskbar-items"></div>
+    <div class="taskbar-clock" id="clock">12:00 PM</div>
+  </div>
+
+  <!-- START MENU -->
+  <div class="start-menu" id="startMenu">
+    <div class="start-menu-sidebar">DinoRawR</div>
+    <div class="start-menu-items">
+      <div class="start-menu-item">
+        <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
+        <span>Programs</span>
+      </div>
+      <div class="start-menu-item">
+        <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
+        <span>Documents</span>
+      </div>
+      <div class="start-menu-item">
+        <img src="https://win98icons.alexmeub.com/icons/png/settings_gear-0.png">
+        <span>Settings</span>
+      </div>
+      <div class="start-menu-item">
+        <img src="https://win98icons.alexmeub.com/icons/png/search_file-0.png">
+        <span>Find</span>
+      </div>
+      <div class="start-menu-item">
+        <img src="https://win98icons.alexmeub.com/icons/png/help_book-0.png">
+        <span>Help</span>
+      </div>
+      <div class="start-menu-separator"></div>
+      <div class="start-menu-item">
+        <img src="https://win98icons.alexmeub.com/icons/png/keys-0.png">
+        <span>Log Off...</span>
+      </div>
+      <div class="start-menu-item">
+        <img src="https://win98icons.alexmeub.com/icons/png/shut_down_normal-0.png">
+        <span>Shut Down...</span>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ===========================
+   FILE CONTENT DATA
+=========================== */
+const fileContents = {
+  about: `Hi, I'm Terrell Willis! 👋
+
+I'm a developer based in Columbus, GA who loves 
+building tools that help real people.
+
+I'm currently learning web development and 
+creating fun retro projects like this Win98-themed 
+portfolio site.
+
+When I'm not coding, you can find me gaming or 
+exploring new technologies.`,
+
+  skills: `TECHNICAL SKILLS
+================
+
+Languages:
+- JavaScript
+- HTML/CSS
+- Learning more every day!
+
+Interests:
+- Web Development
+- Game Development
+- Retro Computing
+- User Experience Design`,
+
+  hobbies: `HOBBIES & INTERESTS
+===================
+
+🎮 Gaming (especially retro games)
+💻 Tinkering with code
+🎨 Retro design aesthetics
+🚀 Space and sci-fi
+📚 Always learning new things`,
+
+  email: `EMAIL CONTACT
+=============
+
+Dinorawrbite@gmail.com
+
+Feel free to reach out for:
+- Project collaborations
+- Questions about my work
+- Just to say hi!
+
+I typically respond within 24-48 hours.`,
+
+  github: `GITHUB PROFILE
+==============
+
+Visit my GitHub:
+https://github.com/dinorawrbite-creator
+
+Check out my repositories for:
+- Open source contributions
+- Personal projects
+- Code experiments
+- Learning exercises`,
+
+  location: `LOCATION
+========
+
+📍 Columbus, Georgia, USA
+
+Available for:
+- Remote work
+- Local opportunities
+- Virtual collaboration
+
+Time Zone: EST (GMT-5)`,
+
+  social: `SOCIAL MEDIA
+============
+
+Connect with me on:
+
+Twitter: @yourname
+LinkedIn: linkedin.com/in/yourname
+Discord: yourname#1234
+
+Let's connect and build cool things together!`,
+
+  project1: `PROJECT ONE
+===========
+
+Description: A cool web application that does amazing things.
+
+Tech Stack:
+- HTML/CSS/JavaScript
+- Some fancy libraries
+
+Status: Completed ✓
+
+View it live: [Add your link here]`,
+
+  project2: `PROJECT TWO
+===========
+
+Description: Another awesome project showcasing my skills.
+
+Features:
+- Feature 1
+- Feature 2  
+- Feature 3
+
+Tech Stack: JavaScript, Canvas API
+
+Status: In Progress 🚧`,
+
+  project3: `PROJECT THREE
+=============
+
+Description: An experimental project exploring new technologies.
+
+What I learned:
+- New frameworks
+- Better coding practices
+- Problem-solving skills
+
+Status: Completed ✓`,
+
+  wip: `WORK IN PROGRESS
+================
+
+Current Projects:
+- This Win98 Portfolio Site
+- Space Shooter Game
+- Learning React
+- Building more cool stuff!
+
+Coming Soon:
+- More interactive projects
+- Better documentation
+- More features
+
+Stay tuned! 🚀`
+};
+
+/* ===========================
+   CLOCK
+=========================== */
+function updateClock() {
+  const now = new Date();
+  let hours = now.getHours();
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12;
+  document.getElementById('clock').textContent = `${hours}:${minutes} ${ampm}`;
+}
+updateClock();
+setInterval(updateClock, 60000);
+
+/* ===========================
+   START MENU
+=========================== */
+function toggleStartMenu() {
+  const menu = document.getElementById('startMenu');
+  menu.classList.toggle('open');
+}
+
+// Close start menu when clicking outside
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('startMenu');
+  const startBtn = document.querySelector('.start-button');
+  
+  if (!menu.contains(e.target) && !startBtn.contains(e.target)) {
+    menu.classList.remove('open');
+  }
+});
+
+/* ===========================
+   DRAGGABLE DESKTOP ICONS
+=========================== */
+let draggedIcon = null;
+let iconOffsetX = 0;
+let iconOffsetY = 0;
+
+document.querySelectorAll('.desktop-icon').forEach(icon => {
+  icon.addEventListener('mousedown', (e) => {
+    // Single click to select
+    document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected'));
+    icon.classList.add('selected');
+    
+    // Start dragging
+    draggedIcon = icon;
+    const rect = icon.getBoundingClientRect();
+    iconOffsetX = e.clientX - rect.left;
+    iconOffsetY = e.clientY - rect.top;
+    
+    e.preventDefault();
+  });
+  
+  // Double click to open
+  icon.addEventListener('dblclick', (e) => {
+    const iconType = icon.getAttribute('data-icon');
+    if (iconType === 'about') openWindow('aboutWin');
+    else if (iconType === 'games') openWindow('quakeWin');
+    else if (iconType === 'contact') openWindow('contactWin');
+    else if (iconType === 'projects') openWindow('projectsWin');
+  });
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!draggedIcon) return;
+  
+  let newX = e.clientX - iconOffsetX;
+  let newY = e.clientY - iconOffsetY;
+  
+  // Keep icon within viewport (accounting for taskbar)
+  newX = Math.max(0, Math.min(window.innerWidth - draggedIcon.offsetWidth, newX));
+  newY = Math.max(0, Math.min(window.innerHeight - 40 - draggedIcon.offsetHeight, newY));
+  
+  draggedIcon.style.left = newX + 'px';
+  draggedIcon.style.top = newY + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+  draggedIcon = null;
+});
+
+// Click on desktop to deselect icons
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.desktop-icon') && !e.target.closest('.window')) {
+    document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected'));
+  }
+});
+
+/* ===========================
+   WINDOW MANAGEMENT
+=========================== */
+let currentZIndex = 1;
+
+function openWindow(winId) {
+  const win = document.getElementById(winId);
+  win.style.display = 'block';
+  bringToFront(win);
+  showFolderView(winId);
+}
+
+function closeWindow(winId) {
+  document.getElementById(winId).style.display = 'none';
+}
+
+function minimizeWindow(winId) {
+  document.getElementById(winId).style.display = 'none';
+}
+
+function bringToFront(win) {
+  document.querySelectorAll('.window').forEach(w => w.classList.remove('active'));
+  win.classList.add('active');
+  win.style.zIndex = ++currentZIndex;
+}
+
+function showFolderView(winId) {
+  const folder = document.getElementById(winId + '-folder');
+  const text = document.getElementById(winId + '-text');
+  if (folder) folder.style.display = 'block';
+  if (text) text.style.display = 'none';
+}
+
+function showTextContent(winId, contentKey) {
+  const folder = document.getElementById(winId + '-folder');
+  const text = document.getElementById(winId + '-text');
+  
+  if (folder) folder.style.display = 'none';
+  if (text) {
+    text.style.display = 'block';
+    text.textContent = fileContents[contentKey] || 'File not found.';
+  }
+}
+
+/* ===========================
+   DRAGGABLE WINDOWS
+=========================== */
+let draggedWindow = null;
+let offsetX = 0;
+let offsetY = 0;
+
+document.addEventListener('mousedown', e => {
+  const titleBar = e.target.closest('.title-bar');
+  if (!titleBar) return;
+  
+  const win = titleBar.closest('.window');
+  if (!win) return;
+
+  // Don't drag if clicking on buttons
+  if (e.target.closest('button')) return;
+
+  draggedWindow = win;
+  bringToFront(win);
+  
+  const rect = win.getBoundingClientRect();
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
+  
+  e.preventDefault();
+});
+
+document.addEventListener('mousemove', e => {
+  if (!draggedWindow) return;
+  
+  let newX = e.clientX - offsetX;
+  let newY = e.clientY - offsetY;
+  
+  // Keep window within viewport
+  newX = Math.max(0, Math.min(window.innerWidth - draggedWindow.offsetWidth, newX));
+  newY = Math.max(0, Math.min(window.innerHeight - 40, newY));
+  
+  draggedWindow.style.left = newX + 'px';
+  draggedWindow.style.top = newY + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+  draggedWindow = null;
+});
+
+// Click on window body to bring to front
+document.addEventListener('mousedown', e => {
+  const win = e.target.closest('.window');
+  if (win) {
+    bringToFront(win);
+  }
+});
+
+/* ===========================
+   CANVAS SETUP
+=========================== */
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+/* ===========================
+   INPUT
+=========================== */
+let keys = {};
+window.addEventListener('keydown', e => {
+  keys[e.code] = true;
+
+  if (gameOver && canRestart && e.code === "Enter") {
+    restartGame();
+  }
+});
+window.addEventListener('keyup', e => keys[e.code] = false);
+
+/* ===========================
+   GAME STATE
+=========================== */
+const shipImg = new Image();
+shipImg.src = 'ship.png';
+
+shipImg.onload = function() {
+  console.log('Ship image loaded successfully!');
+};
+
+shipImg.onerror = function() {
+  console.error('Failed to load ship.png - check that the file exists in the same folder');
+};
+
+const ship = {
+  x: canvas.width / 2 - 40,
+  y: canvas.height - 120,
+  width: 60,
+  height: 60,
+  speed: 6
+};
+
+let bullets = [];
+let enemies = [];
+let explosions = [];
+
+let lastEnemyTime = 0;
+let shootCooldown = 0;
+
+let score = 0;
+let lives = 3;
+let gameOver = false;
+let canRestart = false;
+
+let invincible = false;
+let invincibleTimer = 0;
+let blinkTimer = 0;
+
+/* ===========================
+   ENEMY SPAWN
+=========================== */
+function spawnEnemy() {
+  const x = Math.random() * (canvas.width - 40);
+  enemies.push({
+    x,
+    y: -40,
+    width: 30,
+    height: 30,
+    speed: 1 + Math.random() * 2
+  });
+}
+
+/* ===========================
+   EXPLOSIONS
+=========================== */
+function createExplosion(x, y) {
+  explosions.push({
+    x,
+    y,
+    size: 4,
+    alpha: 1
+  });
+}
+
+function updateExplosions() {
+  explosions.forEach(ex => {
+    ex.size += 2;
+    ex.alpha -= 0.05;
+  });
+
+  explosions = explosions.filter(ex => ex.alpha > 0);
+}
+
+function drawExplosions() {
+  explosions.forEach(ex => {
+    ctx.save();
+    ctx.globalAlpha = ex.alpha;
+    ctx.fillStyle = 'orange';
+    ctx.fillRect(ex.x - ex.size/2, ex.y - ex.size/2, ex.size, ex.size);
+    ctx.restore();
+  });
+}
+
+/* ===========================
+   RESTART GAME
+=========================== */
+function restartGame() {
+  score = 0;
+  lives = 3;
+  gameOver = false;
+  canRestart = false;
+
+  bullets = [];
+  enemies = [];
+  explosions = [];
+
+  ship.x = canvas.width / 2 - ship.width / 2;
+  ship.y = canvas.height - 120;
+
+  invincible = false;
+  invincibleTimer = 0;
+  blinkTimer = 0;
+}
+
+/* ===========================
+   UPDATE LOOP
+=========================== */
+function update(delta) {
+  if (gameOver) return;
+
+  if (!invincible) {
+    if (keys['ArrowLeft'])  ship.x -= ship.speed;
+    if (keys['ArrowRight']) ship.x += ship.speed;
+  }
+  ship.x = Math.max(0, Math.min(canvas.width - ship.width, ship.x));
+
+  if (!invincible && keys['Space'] && shootCooldown === 0) {
+    bullets.push({
+      x: ship.x + ship.width / 2 - 2,
+      y: ship.y,
+      width: 4,
+      height: 10,
+      speed: 8
+    });
+    shootCooldown = 10;
+  }
+  if (shootCooldown > 0) shootCooldown--;
+
+  bullets.forEach(b => b.y -= b.speed);
+  bullets = bullets.filter(b => b.y > -20);
+
+  if (performance.now() - lastEnemyTime > 800) {
+    spawnEnemy();
+    lastEnemyTime = performance.now();
+  }
+
+  enemies.forEach(e => e.y += e.speed);
+  enemies = enemies.filter(e => e.y < canvas.height + 40);
+
+  bullets.forEach((b, bi) => {
+    enemies.forEach((e, ei) => {
+      if (
+        b.x < e.x + e.width &&
+        b.x + b.width > e.x &&
+        b.y < e.y + e.height &&
+        b.y + b.height > e.y
+      ) {
+        createExplosion(e.x + e.width/2, e.y + e.height/2);
+        enemies.splice(ei, 1);
+        bullets.splice(bi, 1);
+        score += 100;
+      }
+    });
+  });
+
+  enemies.forEach((e, ei) => {
+    if (!invincible &&
+        e.x < ship.x + ship.width &&
+        e.x + e.width > ship.x &&
+        e.y < ship.y + ship.height &&
+        e.y + e.height > ship.y
+    ) {
+      createExplosion(ship.x + ship.width/2, ship.y + ship.height/2);
+      enemies.splice(ei, 1);
+      lives--;
+
+      invincible = true;
+      invincibleTimer = 90;
+      blinkTimer = 0;
+
+      if (lives <= 0) {
+        gameOver = true;
+        canRestart = false;      // scoreboard handles restart now
+        showScoreboard(score);   // ← the only new line you need
+      }
+    }
+  });
+
+  if (invincible) {
+    invincibleTimer--;
+    blinkTimer++;
+
+    if (invincibleTimer <= 0) {
+      invincible = false;
+    }
+  }
+
+  updateExplosions();
+}
+
+/* ===========================
+   DRAW LOOP
+=========================== */
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = 'white';
+  ctx.font = '16px "Press Start 2P"';
+  ctx.textBaseline = 'top';
+  ctx.textAlign = 'center';
+  ctx.fillText(`SCORE: ${score}`, canvas.width / 2, 20);
+
+  ctx.textAlign = 'right';
+  ctx.fillText(`LIVES: ${lives}`, canvas.width - 20, 20);
+
+  if (!gameOver) {
+    if (!invincible || Math.floor(blinkTimer / 10) % 2 === 0) {
+      if (shipImg.complete && shipImg.naturalWidth > 0) {
+        ctx.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
+      } else {
+        ctx.fillStyle = 'cyan';
+        ctx.fillRect(ship.x, ship.y, ship.width, ship.height);
+      }
+    }
+  }
+
+  ctx.fillStyle = 'yellow';
+  bullets.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
+
+  ctx.strokeStyle = 'lime';
+  ctx.lineWidth = 2;
+  enemies.forEach(e => ctx.strokeRect(e.x, e.y, e.width, e.height));
+
+  drawExplosions();
+
+  if (gameOver) {
+    ctx.fillStyle = 'white';
+    ctx.font = '32px "Press Start 2P"';
+    ctx.textAlign = 'center';
+    ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 30);
+
+    ctx.font = '14px "Press Start 2P"';
+    ctx.fillText("PRESS ENTER", canvas.width / 2, canvas.height / 2 + 20);
+    ctx.fillText("TO PLAY AGAIN", canvas.width / 2, canvas.height / 2 + 45);
+  }
+}
+
+/* ===========================
+   GAME LOOP
+=========================== */
+let lastTime = 0;
+function gameLoop(timestamp) {
+  const delta = timestamp - lastTime;
+  lastTime = timestamp;
+
+  update(delta);
+  draw();
+
+  requestAnimationFrame(gameLoop);
+}
+requestAnimationFrame(gameLoop);
+</script>
+<script src="scoreboard.js"></script>
+
+<!-- Video Window -->
+<div class="window" id="videoWin" style="display:block; top:100px; left:100px; width:420px;">
+  <div class="title-bar">
+    <div class="title-bar-text">📺 Now Playing</div>
+    <div class="title-bar-controls">
+      <button aria-label="Minimize" onclick="minimizeWindow('videoWin')"></button>
+      <button aria-label="Close" onclick="this.closest('.window').style.display='none'; document.getElementById('videoFrame').src=document.getElementById('videoFrame').src;"></button>    </div>
+  </div>
+  <div class="window-body" style="height:auto; padding:0;">
+    <iframe 
+      id="videoFrame"
+      width="100%" 
+      height="250"
+      src="https://www.youtube.com/embed/byGTaXSZ0nA?enablejsapi=1"
+      frameborder="0" 
+      allowfullscreen>
+    </iframe>
+  </div>
+
+
+</div>
+
+</body>
+</html>
+
