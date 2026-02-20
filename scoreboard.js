@@ -1,28 +1,7 @@
 /* ============================================
    SCOREBOARD.JS — Win98 Game Over Scoreboard
    
-   HOW TO ADD TO YOUR SITE:
-   1. Drop scoreboard.js and scoreboard.css into your repo
-   2. In index.html <head>, add:
-        <link rel="stylesheet" href="scoreboard.css">
-   3. Before </body>, add:
-        <script src="scoreboard.js"></script>
-   4. In your game's update() function, find this block:
-   
-        if (lives <= 0) {
-          gameOver = true;
-          canRestart = true;          // ← KEEP THIS (or remove if you want)
-        }
-   
-      And change it to:
-   
-        if (lives <= 0) {
-          gameOver = true;
-          canRestart = false;         // ← scoreboard handles restart now
-          showScoreboard(score);      // ← ADD THIS LINE
-        }
-   
-   That's it! The scoreboard will pop up automatically.
+
    ============================================ */
 
 /* ----------------------------------------

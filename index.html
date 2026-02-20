@@ -291,11 +291,17 @@
     }
   </style>
   <link rel="stylesheet" href="scoreboard.css">
+  <link rel="stylesheet" href="tv.css">
 </head>
 
 <body>
 
   <canvas id="gameCanvas"></canvas>
+
+  <!--Tv-->
+  <div class="tv-container">
+    <canvas id="tvCanvas" width="300" height="200"></canvas>
+  </div>
 
   <!-- Desktop Icons -->
   <div class="desktop-icon" style="top: 20px; left: 20px;" data-icon="about">
@@ -403,7 +409,7 @@ Your ship will blink when invincible after taking damage.
             <img src="https://win98icons.alexmeub.com/icons/png/envelope_closed-0.png">
             <div class="file-item-name">terrell.willis@outlook.com</div>
           </div>
-          <div class="file-item" onclick="showTextContent('contactWin', 'github')">
+          <div class="file-item" onclick="window.open('https://github.com/dinorawrbite-creator', 'github')">
             <img src="https://zipplie.github.io/zipplie-site/img/github.png">
             <div class="file-item-name">https://github.com/dinorawrbite-creator</div>
           </div>
@@ -1089,16 +1095,7 @@ function draw() {
 
   drawExplosions();
 
-  if (gameOver) {
-    ctx.fillStyle = 'white';
-    ctx.font = '32px "Press Start 2P"';
-    ctx.textAlign = 'center';
-    ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 30);
-
-    ctx.font = '14px "Press Start 2P"';
-    ctx.fillText("PRESS ENTER", canvas.width / 2, canvas.height / 2 + 20);
-    ctx.fillText("TO PLAY AGAIN", canvas.width / 2, canvas.height / 2 + 45);
-  }
+  
 }
 
 /* ===========================
@@ -1117,6 +1114,7 @@ function gameLoop(timestamp) {
 requestAnimationFrame(gameLoop);
 </script>
 <script src="scoreboard.js"></script>
+<script src="tv.js"></script>
 
 <!-- Video Window -->
 <div class="window" id="videoWin" style="display:block; top:100px; left:100px; width:420px;">
