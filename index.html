@@ -10,7 +10,7 @@
   <style>
     
     .hidden {
-    display: none !important;
+      display: none !important;
     }
 
     body {
@@ -21,7 +21,6 @@
       overflow: hidden;
     }
     
-    /* Override 98.css fonts with pixel font */
     .window, .title-bar, .title-bar-text, button, .window-body {
       font-family: 'Press Start 2P', cursive;
       font-size: 8px;
@@ -73,11 +72,35 @@
       user-select: none;
     }
 
+    /* Default window body for all normal windows */
     .window-body {
       background: white;
       padding: 0;
       height: 300px;
       overflow-y: auto;
+    }
+
+    /* Video window overrides - no fixed height, just wraps content */
+    #videoWin {
+      width: 420px !important;
+    }
+
+    #videoWin .window-body {
+      height: auto !important;
+      max-height: none !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      font-size: 0 !important;
+      line-height: 0 !important;
+    }
+
+    #videoWin iframe {
+      display: block !important;
+      width: 100% !important;
+      height: 250px !important;
+      border: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
 
     /* File explorer styling - LIST VIEW */
@@ -94,13 +117,8 @@
       z-index: 1;
     }
 
-    .header-icon {
-      width: 16px;
-    }
-
-    .header-name {
-      flex: 1;
-    }
+    .header-icon { width: 16px; }
+    .header-name { flex: 1; }
 
     .file-list {
       display: block;
@@ -138,7 +156,6 @@
       flex: 1;
     }
 
-    /* Text file content view */
     .text-content {
       padding: 10px;
       font-family: 'Press Start 2P', cursive;
@@ -158,7 +175,6 @@
       z-index: -1;
     }
 
-    /* Toolbar for windows */
     .toolbar {
       border-bottom: 1px solid #808080;
       padding: 2px;
@@ -202,14 +218,8 @@
       user-select: none;
     }
 
-    .start-button:active {
-      border-style: inset;
-    }
-
-    .start-button img {
-      width: 20px;
-      height: 20px;
-    }
+    .start-button:active { border-style: inset; }
+    .start-button img { width: 20px; height: 20px; }
 
     .taskbar-items {
       flex: 1;
@@ -228,7 +238,7 @@
       font-size: 9px;
       background: white;
     }
-
+    
     /* START MENU */
     .start-menu {
       position: fixed;
@@ -242,9 +252,7 @@
       box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
     }
 
-    .start-menu.open {
-      display: block;
-    }
+    .start-menu.open { display: block; }
 
     .start-menu-sidebar {
       background: #000080;
@@ -271,6 +279,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      cursor: pointer;
     }
 
     .start-menu-item:hover {
@@ -278,10 +287,7 @@
       color: white;
     }
 
-    .start-menu-item img {
-      width: 24px;
-      height: 24px;
-    }
+    .start-menu-item img { width: 24px; height: 24px; }
 
     .start-menu-separator {
       height: 2px;
@@ -316,6 +322,11 @@
   <div class="desktop-icon" style="top: 320px; left: 20px;" data-icon="projects">
     <img src="https://win98icons.alexmeub.com/icons/png/defragment-0.png">
     <div>Projects</div>
+  </div>
+
+  <div class="desktop-icon" style="top: 420px; left: 20px;" data-icon="paint">
+    <img src="https://win98icons.alexmeub.com/icons/png/paint_old-0.png">
+    <div>Paint</div>
   </div>
 
   <!-- About Window -->
@@ -355,7 +366,7 @@
     </div>
   </div>
 
-  <!-- Quake Game Window -->
+  <!-- Games Window -->
   <div class="window" id="quakeWin">
     <div class="title-bar">
       <div class="title-bar-text">GAMES</div>
@@ -403,18 +414,9 @@ Your ship will blink when invincible after taking damage.
             <img src="https://win98icons.alexmeub.com/icons/png/envelope_closed-0.png">
             <div class="file-item-name">terrell.willis@outlook.com</div>
           </div>
-          <div class="file-item" onclick="showTextContent('contactWin', 'github')">
+          <div class="file-item" onclick="window.open('https://github.com/dinorawrbite-creator', 'github')">
             <img src="https://zipplie.github.io/zipplie-site/img/github.png">
             <div class="file-item-name">https://github.com/dinorawrbite-creator</div>
-          </div>
-          <div class="file-item" onclick="showTextContent('contactWin', 'location')" style="display: none;">
-            <img src="https://win98icons.alexmeub.com/icons/png/globe-2.png">
-            <div class="file-item-name">location.txt</div>
-          </div>
-          
-          <div class="file-item hidden" onclick="showTextContent('contactWin', 'social')">
-            <img src="https://win98icons.alexmeub.com/icons/png/users-2.png">
-            <div class="file-item-name">social.txt</div>
           </div>
         </div>
       </div>
@@ -463,6 +465,54 @@ Your ship will blink when invincible after taking damage.
     </div>
   </div>
 
+  <!-- Video Window -->
+  <div class="window" id="videoWin" style="display:block;">
+    <div class="title-bar">
+      <div class="title-bar-text">📺 Now Playing</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" onclick="minimizeWindow('videoWin')"></button>
+        <button aria-label="Close" onclick="this.closest('.window').style.display='none'; document.getElementById('videoFrame').src=document.getElementById('videoFrame').src;"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <iframe
+        id="videoFrame"
+        src="https://www.youtube.com/embed/byGTaXSZ0nA?enablejsapi=1"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <!-- Paint Window -->
+  <div class="window" id="paintWin" style="width:600px;">
+    <div class="title-bar">
+      <div class="title-bar-text">🎨 Paint</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" onclick="minimizeWindow('paintWin')"></button>
+        <button aria-label="Close" onclick="closeWindow('paintWin')"></button>
+      </div>
+    </div>
+    <div class="window-body" style="height:auto; padding:4px; background:#c0c0c0;">
+      <div style="display:flex; gap:4px; margin-bottom:4px; flex-wrap:wrap; align-items:center;">
+        <button onclick="setTool('pen')" id="tool-pen">✏️ Pen</button>
+        <button onclick="setTool('fill')" id="tool-fill">🪣 Fill</button>
+        <button onclick="setTool('eraser')" id="tool-eraser">🧹 Eraser</button>
+        <button onclick="clearCanvas()">🗑️ Clear</button>
+        <label style="font-size:7px; font-family:'Press Start 2P'">Size:
+          <input type="range" min="1" max="30" value="4" id="brushSize" style="width:60px;">
+        </label>
+        <label style="font-size:7px; font-family:'Press Start 2P'">Color:
+          <input type="color" id="colorPicker" value="#000000">
+        </label>
+      </div>
+      <div id="paintPalette" style="display:flex; gap:2px; flex-wrap:wrap; max-width:580px; margin-bottom:4px;"></div>
+      <canvas id="paintCanvas" width="560" height="350"
+        style="background:white; cursor:crosshair; display:block; border: 2px inset #808080;">
+      </canvas>
+    </div>
+  </div>
+
   <!-- TASKBAR -->
   <div class="taskbar">
     <div class="start-button" onclick="toggleStartMenu()">
@@ -478,12 +528,12 @@ Your ship will blink when invincible after taking damage.
     <div class="start-menu-sidebar">DinoRawR</div>
     <div class="start-menu-items">
       <div class="start-menu-item">
-        <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
+        <img src="https://win98icons.alexmeub.com/icons/png/appwizard-2.png">
         <span>Programs</span>
       </div>
-      <div class="start-menu-item">
-        <img src="https://win98icons.alexmeub.com/icons/png/folder_file-2.png">
-        <span>Documents</span>
+      <div class="start-menu-item" onclick="openWindow('paintWin'); toggleStartMenu();">
+        <img src="https://win98icons.alexmeub.com/icons/png/paint_old-0.png">
+        <span>Paint</span>
       </div>
       <div class="start-menu-item">
         <img src="https://win98icons.alexmeub.com/icons/png/settings_gear-0.png">
@@ -494,7 +544,7 @@ Your ship will blink when invincible after taking damage.
         <span>Find</span>
       </div>
       <div class="start-menu-item">
-        <img src="https://win98icons.alexmeub.com/icons/png/help_book-0.png">
+        <img src="https://win98icons.alexmeub.com/icons/png/msg_question-0.png">
         <span>Help</span>
       </div>
       <div class="start-menu-separator"></div>
@@ -565,13 +615,7 @@ I typically respond within 24-48 hours.`,
 ==============
 
 Visit my GitHub:
-https://github.com/dinorawrbite-creator
-
-Check out my repositories for:
-- Open source contributions
-- Personal projects
-- Code experiments
-- Learning exercises`,
+https://github.com/dinorawrbite-creator`,
 
   location: `LOCATION
 ========
@@ -592,32 +636,22 @@ Connect with me on:
 
 Twitter: @yourname
 LinkedIn: linkedin.com/in/yourname
-Discord: yourname#1234
-
-Let's connect and build cool things together!`,
+Discord: yourname#1234`,
 
   project1: `PROJECT ONE
 ===========
 
-Description: A cool web application that does amazing things.
+Description: A cool web application.
 
 Tech Stack:
 - HTML/CSS/JavaScript
-- Some fancy libraries
 
-Status: Completed ✓
-
-View it live: [Add your link here]`,
+Status: Completed ✓`,
 
   project2: `PROJECT TWO
 ===========
 
-Description: Another awesome project showcasing my skills.
-
-Features:
-- Feature 1
-- Feature 2  
-- Feature 3
+Description: Another awesome project.
 
 Tech Stack: JavaScript, Canvas API
 
@@ -626,12 +660,7 @@ Status: In Progress 🚧`,
   project3: `PROJECT THREE
 =============
 
-Description: An experimental project exploring new technologies.
-
-What I learned:
-- New frameworks
-- Better coding practices
-- Problem-solving skills
+Description: An experimental project.
 
 Status: Completed ✓`,
 
@@ -642,12 +671,9 @@ Current Projects:
 - This Win98 Portfolio Site
 - Space Shooter Game
 - Learning React
-- Building more cool stuff!
 
 Coming Soon:
 - More interactive projects
-- Better documentation
-- More features
 
 Stay tuned! 🚀`
 };
@@ -670,15 +696,12 @@ setInterval(updateClock, 60000);
    START MENU
 =========================== */
 function toggleStartMenu() {
-  const menu = document.getElementById('startMenu');
-  menu.classList.toggle('open');
+  document.getElementById('startMenu').classList.toggle('open');
 }
 
-// Close start menu when clicking outside
 document.addEventListener('click', (e) => {
   const menu = document.getElementById('startMenu');
   const startBtn = document.querySelector('.start-button');
-  
   if (!menu.contains(e.target) && !startBtn.contains(e.target)) {
     menu.classList.remove('open');
   }
@@ -693,48 +716,35 @@ let iconOffsetY = 0;
 
 document.querySelectorAll('.desktop-icon').forEach(icon => {
   icon.addEventListener('mousedown', (e) => {
-    // Single click to select
     document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected'));
     icon.classList.add('selected');
-    
-    // Start dragging
     draggedIcon = icon;
     const rect = icon.getBoundingClientRect();
     iconOffsetX = e.clientX - rect.left;
     iconOffsetY = e.clientY - rect.top;
-    
     e.preventDefault();
   });
-  
-  // Double click to open
+
   icon.addEventListener('dblclick', (e) => {
     const iconType = icon.getAttribute('data-icon');
     if (iconType === 'about') openWindow('aboutWin');
     else if (iconType === 'games') openWindow('quakeWin');
     else if (iconType === 'contact') openWindow('contactWin');
     else if (iconType === 'projects') openWindow('projectsWin');
+    else if (iconType === 'paint') openWindow('paintWin');
   });
 });
 
 document.addEventListener('mousemove', (e) => {
   if (!draggedIcon) return;
-  
-  let newX = e.clientX - iconOffsetX;
-  let newY = e.clientY - iconOffsetY;
-  
-  // Keep icon within viewport (accounting for taskbar)
-  newX = Math.max(0, Math.min(window.innerWidth - draggedIcon.offsetWidth, newX));
-  newY = Math.max(0, Math.min(window.innerHeight - 40 - draggedIcon.offsetHeight, newY));
-  
+  let newX = Math.max(0, Math.min(window.innerWidth - draggedIcon.offsetWidth, e.clientX - iconOffsetX));
+  let newY = Math.max(0, Math.min(window.innerHeight - 40 - draggedIcon.offsetHeight, e.clientY - iconOffsetY));
   draggedIcon.style.left = newX + 'px';
   draggedIcon.style.top = newY + 'px';
 });
 
-document.addEventListener('mouseup', () => {
-  draggedIcon = null;
-});
+document.addEventListener('mouseup', () => { draggedIcon = null; });
 
-// Click on desktop to deselect icons
 document.addEventListener('click', (e) => {
   if (!e.target.closest('.desktop-icon') && !e.target.closest('.window')) {
     document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected'));
@@ -777,7 +787,6 @@ function showFolderView(winId) {
 function showTextContent(winId, contentKey) {
   const folder = document.getElementById(winId + '-folder');
   const text = document.getElementById(winId + '-text');
-  
   if (folder) folder.style.display = 'none';
   if (text) {
     text.style.display = 'block';
@@ -795,47 +804,42 @@ let offsetY = 0;
 document.addEventListener('mousedown', e => {
   const titleBar = e.target.closest('.title-bar');
   if (!titleBar) return;
-  
   const win = titleBar.closest('.window');
   if (!win) return;
-
-  // Don't drag if clicking on buttons
   if (e.target.closest('button')) return;
 
   draggedWindow = win;
   bringToFront(win);
-  
   const rect = win.getBoundingClientRect();
   offsetX = e.clientX - rect.left;
   offsetY = e.clientY - rect.top;
-  
   e.preventDefault();
 });
 
 document.addEventListener('mousemove', e => {
   if (!draggedWindow) return;
-  
-  let newX = e.clientX - offsetX;
-  let newY = e.clientY - offsetY;
-  
-  // Keep window within viewport
-  newX = Math.max(0, Math.min(window.innerWidth - draggedWindow.offsetWidth, newX));
-  newY = Math.max(0, Math.min(window.innerHeight - 40, newY));
-  
+  // Switch from fixed to absolute when dragging starts
+  if (draggedWindow.style.position === 'fixed') {
+    const rect = draggedWindow.getBoundingClientRect();
+    draggedWindow.style.position = 'absolute';
+    draggedWindow.style.top = rect.top + 'px';
+    draggedWindow.style.left = rect.left + 'px';
+    draggedWindow.style.bottom = 'auto';
+    draggedWindow.style.right = 'auto';
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+  }
+  let newX = Math.max(0, Math.min(window.innerWidth - draggedWindow.offsetWidth, e.clientX - offsetX));
+  let newY = Math.max(0, Math.min(window.innerHeight - 40, e.clientY - offsetY));
   draggedWindow.style.left = newX + 'px';
   draggedWindow.style.top = newY + 'px';
 });
 
-document.addEventListener('mouseup', () => {
-  draggedWindow = null;
-});
+document.addEventListener('mouseup', () => { draggedWindow = null; });
 
-// Click on window body to bring to front
 document.addEventListener('mousedown', e => {
   const win = e.target.closest('.window');
-  if (win) {
-    bringToFront(win);
-  }
+  if (win) bringToFront(win);
 });
 
 /* ===========================
@@ -857,10 +861,7 @@ window.addEventListener('resize', resizeCanvas);
 let keys = {};
 window.addEventListener('keydown', e => {
   keys[e.code] = true;
-
-  if (gameOver && canRestart && e.code === "Enter") {
-    restartGame();
-  }
+  if (gameOver && canRestart && e.code === "Enter") restartGame();
 });
 window.addEventListener('keyup', e => keys[e.code] = false);
 
@@ -870,14 +871,6 @@ window.addEventListener('keyup', e => keys[e.code] = false);
 const shipImg = new Image();
 shipImg.src = 'ship.png';
 
-shipImg.onload = function() {
-  console.log('Ship image loaded successfully!');
-};
-
-shipImg.onerror = function() {
-  console.error('Failed to load ship.png - check that the file exists in the same folder');
-};
-
 const ship = {
   x: canvas.width / 2 - 40,
   y: canvas.height - 120,
@@ -886,54 +879,26 @@ const ship = {
   speed: 6
 };
 
-let bullets = [];
-let enemies = [];
-let explosions = [];
+let bullets = [], enemies = [], explosions = [];
+let lastEnemyTime = 0, shootCooldown = 0;
+let score = 0, lives = 3;
+let gameOver = false, canRestart = false;
+let invincible = false, invincibleTimer = 0, blinkTimer = 0;
 
-let lastEnemyTime = 0;
-let shootCooldown = 0;
-
-let score = 0;
-let lives = 3;
-let gameOver = false;
-let canRestart = false;
-
-let invincible = false;
-let invincibleTimer = 0;
-let blinkTimer = 0;
-
-/* ===========================
-   ENEMY SPAWN
-=========================== */
 function spawnEnemy() {
-  const x = Math.random() * (canvas.width - 40);
   enemies.push({
-    x,
-    y: -40,
-    width: 30,
-    height: 30,
+    x: Math.random() * (canvas.width - 40),
+    y: -40, width: 30, height: 30,
     speed: 1 + Math.random() * 2
   });
 }
 
-/* ===========================
-   EXPLOSIONS
-=========================== */
 function createExplosion(x, y) {
-  explosions.push({
-    x,
-    y,
-    size: 4,
-    alpha: 1
-  });
+  explosions.push({ x, y, size: 4, alpha: 1 });
 }
 
 function updateExplosions() {
-  explosions.forEach(ex => {
-    ex.size += 2;
-    ex.alpha -= 0.05;
-  });
-
+  explosions.forEach(ex => { ex.size += 2; ex.alpha -= 0.05; });
   explosions = explosions.filter(ex => ex.alpha > 0);
 }
 
@@ -947,30 +912,14 @@ function drawExplosions() {
   });
 }
 
-/* ===========================
-   RESTART GAME
-=========================== */
 function restartGame() {
-  score = 0;
-  lives = 3;
-  gameOver = false;
-  canRestart = false;
-
-  bullets = [];
-  enemies = [];
-  explosions = [];
-
+  score = 0; lives = 3; gameOver = false; canRestart = false;
+  bullets = []; enemies = []; explosions = [];
   ship.x = canvas.width / 2 - ship.width / 2;
   ship.y = canvas.height - 120;
-
-  invincible = false;
-  invincibleTimer = 0;
-  blinkTimer = 0;
+  invincible = false; invincibleTimer = 0; blinkTimer = 0;
 }
 
-/* ===========================
-   UPDATE LOOP
-=========================== */
 function update(delta) {
   if (gameOver) return;
 
@@ -981,13 +930,7 @@ function update(delta) {
   ship.x = Math.max(0, Math.min(canvas.width - ship.width, ship.x));
 
   if (!invincible && keys['Space'] && shootCooldown === 0) {
-    bullets.push({
-      x: ship.x + ship.width / 2 - 2,
-      y: ship.y,
-      width: 4,
-      height: 10,
-      speed: 8
-    });
+    bullets.push({ x: ship.x + ship.width/2 - 2, y: ship.y, width: 4, height: 10, speed: 8 });
     shootCooldown = 10;
   }
   if (shootCooldown > 0) shootCooldown--;
@@ -1005,13 +948,8 @@ function update(delta) {
 
   bullets.forEach((b, bi) => {
     enemies.forEach((e, ei) => {
-      if (
-        b.x < e.x + e.width &&
-        b.x + b.width > e.x &&
-        b.y < e.y + e.height &&
-        b.y + b.height > e.y
-      ) {
-        createExplosion(e.x + e.width/2, e.y + e.height/2);
+      if (b.x < e.x+e.width && b.x+b.width > e.x && b.y < e.y+e.height && b.y+b.height > e.y) {
+        createExplosion(e.x+e.width/2, e.y+e.height/2);
         enemies.splice(ei, 1);
         bullets.splice(bi, 1);
         score += 100;
@@ -1020,24 +958,15 @@ function update(delta) {
   });
 
   enemies.forEach((e, ei) => {
-    if (!invincible &&
-        e.x < ship.x + ship.width &&
-        e.x + e.width > ship.x &&
-        e.y < ship.y + ship.height &&
-        e.y + e.height > ship.y
-    ) {
-      createExplosion(ship.x + ship.width/2, ship.y + ship.height/2);
+    if (!invincible && e.x < ship.x+ship.width && e.x+e.width > ship.x && e.y < ship.y+ship.height && e.y+e.height > ship.y) {
+      createExplosion(ship.x+ship.width/2, ship.y+ship.height/2);
       enemies.splice(ei, 1);
       lives--;
-
-      invincible = true;
-      invincibleTimer = 90;
-      blinkTimer = 0;
-
+      invincible = true; invincibleTimer = 90; blinkTimer = 0;
       if (lives <= 0) {
         gameOver = true;
-        canRestart = false;      // scoreboard handles restart now
-        showScoreboard(score);   // ← the only new line you need
+        canRestart = false;
+        showScoreboard(score);
       }
     }
   });
@@ -1045,32 +974,24 @@ function update(delta) {
   if (invincible) {
     invincibleTimer--;
     blinkTimer++;
-
-    if (invincibleTimer <= 0) {
-      invincible = false;
-    }
+    if (invincibleTimer <= 0) invincible = false;
   }
 
   updateExplosions();
 }
 
-/* ===========================
-   DRAW LOOP
-=========================== */
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   ctx.fillStyle = 'white';
   ctx.font = '16px "Press Start 2P"';
   ctx.textBaseline = 'top';
   ctx.textAlign = 'center';
-  ctx.fillText(`SCORE: ${score}`, canvas.width / 2, 20);
-
+  ctx.fillText(`SCORE: ${score}`, canvas.width/2, 20);
   ctx.textAlign = 'right';
   ctx.fillText(`LIVES: ${lives}`, canvas.width - 20, 20);
 
   if (!gameOver) {
-    if (!invincible || Math.floor(blinkTimer / 10) % 2 === 0) {
+    if (!invincible || Math.floor(blinkTimer/10) % 2 === 0) {
       if (shipImg.complete && shipImg.naturalWidth > 0) {
         ctx.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
       } else {
@@ -1082,41 +1003,130 @@ function draw() {
 
   ctx.fillStyle = 'yellow';
   bullets.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
-
   ctx.strokeStyle = 'lime';
   ctx.lineWidth = 2;
   enemies.forEach(e => ctx.strokeRect(e.x, e.y, e.width, e.height));
-
   drawExplosions();
-
-  if (gameOver) {
-    ctx.fillStyle = 'white';
-    ctx.font = '32px "Press Start 2P"';
-    ctx.textAlign = 'center';
-    ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 30);
-
-    ctx.font = '14px "Press Start 2P"';
-    ctx.fillText("PRESS ENTER", canvas.width / 2, canvas.height / 2 + 20);
-    ctx.fillText("TO PLAY AGAIN", canvas.width / 2, canvas.height / 2 + 45);
-  }
 }
 
-/* ===========================
-   GAME LOOP
-=========================== */
 let lastTime = 0;
 function gameLoop(timestamp) {
   const delta = timestamp - lastTime;
   lastTime = timestamp;
-
   update(delta);
   draw();
-
   requestAnimationFrame(gameLoop);
 }
 requestAnimationFrame(gameLoop);
+
+/* ===========================
+   PAINT
+=========================== */
+const paintCanvas = document.getElementById('paintCanvas');
+const paintCtx = paintCanvas.getContext('2d');
+let painting = false;
+let currentTool = 'pen';
+let lastX = 0, lastY = 0;
+
+paintCtx.fillStyle = 'white';
+paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+
+const paletteColors = [
+  '#000000','#808080','#800000','#808000','#008000','#008080',
+  '#000080','#800080','#ffffff','#c0c0c0','#ff0000','#ffff00',
+  '#00ff00','#00ffff','#0000ff','#ff00ff','#ff8040','#804000',
+  '#80ff00','#004040','#0080ff','#8000ff','#ff0080','#ff8080'
+];
+
+const palette = document.getElementById('paintPalette');
+paletteColors.forEach(color => {
+  const swatch = document.createElement('div');
+  swatch.style.cssText = `width:16px;height:16px;background:${color};cursor:pointer;border:1px solid #808080;flex-shrink:0;`;
+  swatch.onclick = () => document.getElementById('colorPicker').value = color;
+  palette.appendChild(swatch);
+});
+
+function setTool(tool) {
+  currentTool = tool;
+  ['pen','fill','eraser'].forEach(t => {
+    const btn = document.getElementById('tool-' + t);
+    if (btn) btn.style.fontWeight = t === tool ? 'bold' : 'normal';
+  });
+}
+setTool('pen');
+
+function getPaintPos(e) {
+  const rect = paintCanvas.getBoundingClientRect();
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+}
+
+function floodFill(startX, startY, fillColor) {
+  startX = Math.floor(startX); startY = Math.floor(startY);
+  const imgData = paintCtx.getImageData(0, 0, paintCanvas.width, paintCanvas.height);
+  const data = imgData.data;
+  const getIdx = (x, y) => (y * paintCanvas.width + x) * 4;
+  const si = getIdx(startX, startY);
+  const [sR, sG, sB, sA] = [data[si], data[si+1], data[si+2], data[si+3]];
+  const tmp = document.createElement('canvas').getContext('2d');
+  tmp.fillStyle = fillColor;
+  tmp.fillRect(0,0,1,1);
+  const fc = tmp.getImageData(0,0,1,1).data;
+  if (fc[0]===sR && fc[1]===sG && fc[2]===sB) return;
+  const stack = [[startX, startY]];
+  while (stack.length) {
+    const [x, y] = stack.pop();
+    if (x<0||x>=paintCanvas.width||y<0||y>=paintCanvas.height) continue;
+    const idx = getIdx(x, y);
+    if (data[idx]!==sR||data[idx+1]!==sG||data[idx+2]!==sB||data[idx+3]!==sA) continue;
+    data[idx]=fc[0]; data[idx+1]=fc[1]; data[idx+2]=fc[2]; data[idx+3]=255;
+    stack.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]);
+  }
+  paintCtx.putImageData(imgData, 0, 0);
+}
+
+paintCanvas.addEventListener('mousedown', e => {
+  const pos = getPaintPos(e);
+  if (currentTool === 'fill') { floodFill(pos.x, pos.y, document.getElementById('colorPicker').value); return; }
+  painting = true;
+  lastX = pos.x; lastY = pos.y;
+  paintCtx.beginPath();
+  paintCtx.arc(lastX, lastY, parseInt(document.getElementById('brushSize').value)/2, 0, Math.PI*2);
+  paintCtx.fillStyle = currentTool === 'eraser' ? 'white' : document.getElementById('colorPicker').value;
+  paintCtx.fill();
+});
+
+paintCanvas.addEventListener('mousemove', e => {
+  if (!painting) return;
+  const pos = getPaintPos(e);
+  const size = parseInt(document.getElementById('brushSize').value);
+  paintCtx.beginPath();
+  paintCtx.moveTo(lastX, lastY);
+  paintCtx.lineTo(pos.x, pos.y);
+  paintCtx.strokeStyle = currentTool === 'eraser' ? 'white' : document.getElementById('colorPicker').value;
+  paintCtx.lineWidth = size;
+  paintCtx.lineCap = 'round';
+  paintCtx.stroke();
+  lastX = pos.x; lastY = pos.y;
+});
+
+paintCanvas.addEventListener('mouseup', () => painting = false);
+paintCanvas.addEventListener('mouseleave', () => painting = false);
+
+function clearCanvas() {
+  paintCtx.fillStyle = 'white';
+  paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+}
 </script>
 <script src="scoreboard.js"></script>
+<script>
+  // Set video window to bottom right on load
+  const vw = document.getElementById('videoWin');
+  vw.style.position = 'fixed';
+  vw.style.bottom = '100px';
+  vw.style.right = '100px';
+  vw.style.top = 'auto';
+  vw.style.left = 'auto';
+</script>
 
 </body>
 </html>

@@ -1,28 +1,7 @@
 /* ============================================
    SCOREBOARD.JS — Win98 Game Over Scoreboard
    
-   HOW TO ADD TO YOUR SITE:
-   1. Drop scoreboard.js and scoreboard.css into your repo
-   2. In index.html <head>, add:
-        <link rel="stylesheet" href="scoreboard.css">
-   3. Before </body>, add:
-        <script src="scoreboard.js"></script>
-   4. In your game's update() function, find this block:
-   
-        if (lives <= 0) {
-          gameOver = true;
-          canRestart = true;          // ← KEEP THIS (or remove if you want)
-        }
-   
-      And change it to:
-   
-        if (lives <= 0) {
-          gameOver = true;
-          canRestart = false;         // ← scoreboard handles restart now
-          showScoreboard(score);      // ← ADD THIS LINE
-        }
-   
-   That's it! The scoreboard will pop up automatically.
+
    ============================================ */
 
 /* ----------------------------------------
@@ -155,8 +134,8 @@ async function showScoreboard(finalScore) {
   win.style.position = 'fixed';
   win.style.top = '0';
   win.style.left = '0';
-  win.style.right = '0';
-  win.style.bottom = '0';
+  win.style.right = '20';
+  win.style.bottom = '20';
   win.style.margin = 'auto';
   win.style.width = '360px';
   win.style.zIndex = '99999';
@@ -294,4 +273,133 @@ document.addEventListener('DOMContentLoaded', function() {
       input.value = input.value.toUpperCase().replace(/[^A-Z]/g, '');
     });
   }
+
+// video window
+
+function closeVideoWindow() {
+  // Stop the video by resetting the iframe src
+  document.getElementById('videoWin').style.display = 'none';
+}
+
+
+
+// Paint Here 
+/* ===========================
+   MICROSOFT PAINT
+=========================== */
+const paintCanvas = document.getElementById('paintCanvas');
+const paintCtx = paintCanvas.getContext('2d');
+let painting = false;
+let currentTool = 'pen';
+let lastX = 0, lastY = 0;
+
+// Fill canvas white on init
+paintCtx.fillStyle = 'white';
+paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+
+// Color palette
+const paletteColors = [
+  '#000000','#808080','#800000','#808000','#008000','#008080',
+  '#000080','#800080','#ffffff','#c0c0c0','#ff0000','#ffff00',
+  '#00ff00','#00ffff','#0000ff','#ff00ff','#ff8040','#804000',
+  '#80ff00','#004040','#0080ff','#8000ff','#ff0080','#ff8080'
+];
+const palette = document.getElementById('paintPalette');
+paletteColors.forEach(color => {
+  const swatch = document.createElement('div');
+  swatch.style.cssText = `width:16px;height:16px;background:${color};cursor:pointer;border:1px solid #808080;flex-shrink:0;`;
+  swatch.onclick = () => document.getElementById('colorPicker').value = color;
+  palette.appendChild(swatch);
+});
+
+function setTool(tool) {
+  currentTool = tool;
+  // Visual feedback - reset all, highlight active
+  ['pen','fill','eraser'].forEach(t => {
+    const btn = document.getElementById('tool-' + t);
+    if (btn) btn.style.fontWeight = t === tool ? 'bold' : 'normal';
+  });
+}
+setTool('pen');
+
+function getPos(e) {
+  const rect = paintCanvas.getBoundingClientRect();
+  return {
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
+  };
+}
+
+// Flood fill implementation
+function floodFill(startX, startY, fillColor) {
+  startX = Math.floor(startX);
+  startY = Math.floor(startY);
+  const imgData = paintCtx.getImageData(0, 0, paintCanvas.width, paintCanvas.height);
+  const data = imgData.data;
+
+  function getIdx(x, y) { return (y * paintCanvas.width + x) * 4; }
+  const startIdx = getIdx(startX, startY);
+  const startR = data[startIdx], startG = data[startIdx+1], startB = data[startIdx+2], startA = data[startIdx+3];
+
+  // Parse fill color
+  const temp = document.createElement('canvas').getContext('2d');
+  temp.fillStyle = fillColor;
+  temp.fillRect(0,0,1,1);
+  const fc = temp.getImageData(0,0,1,1).data;
+  if (fc[0]===startR && fc[1]===startG && fc[2]===startB) return;
+
+  const stack = [[startX, startY]];
+  while (stack.length) {
+    const [x, y] = stack.pop();
+    if (x<0||x>=paintCanvas.width||y<0||y>=paintCanvas.height) continue;
+    const idx = getIdx(x, y);
+    if (data[idx]!==startR||data[idx+1]!==startG||data[idx+2]!==startB||data[idx+3]!==startA) continue;
+    data[idx]=fc[0]; data[idx+1]=fc[1]; data[idx+2]=fc[2]; data[idx+3]=255;
+    stack.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]);
+  }
+  paintCtx.putImageData(imgData, 0, 0);
+}
+
+paintCanvas.addEventListener('mousedown', e => {
+  const pos = getPos(e);
+  if (currentTool === 'fill') {
+    floodFill(pos.x, pos.y, document.getElementById('colorPicker').value);
+    return;
+  }
+  painting = true;
+  lastX = pos.x;
+  lastY = pos.y;
+  // Draw a dot on click
+  paintCtx.beginPath();
+  paintCtx.arc(lastX, lastY, parseInt(document.getElementById('brushSize').value)/2, 0, Math.PI*2);
+  paintCtx.fillStyle = currentTool === 'eraser' ? 'white' : document.getElementById('colorPicker').value;
+  paintCtx.fill();
+});
+
+paintCanvas.addEventListener('mousemove', e => {
+  if (!painting) return;
+  const pos = getPos(e);
+  const size = parseInt(document.getElementById('brushSize').value);
+  paintCtx.beginPath();
+  paintCtx.moveTo(lastX, lastY);
+  paintCtx.lineTo(pos.x, pos.y);
+  paintCtx.strokeStyle = currentTool === 'eraser' ? 'white' : document.getElementById('colorPicker').value;
+  paintCtx.lineWidth = size;
+  paintCtx.lineCap = 'round';
+  paintCtx.stroke();
+  lastX = pos.x;
+  lastY = pos.y;
+});
+
+paintCanvas.addEventListener('mouseup', () => painting = false);
+paintCanvas.addEventListener('mouseleave', () => painting = false);
+
+function clearCanvas() {
+  paintCtx.fillStyle = 'white';
+  paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+}
+
+
+
+
 });

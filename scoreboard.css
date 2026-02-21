@@ -304,3 +304,27 @@
   border-right: 1px solid #808080;
   border-bottom: 1px solid #808080;
 }
+
+#video-window {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 200px;
+  z-index: 9999;
+}
+
+#video-titlebar {
+  background: #000080;
+  color: white;
+  padding: 3px 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: grab;
+  font-family: Arial;
+  font-size: 12px;
+}
+
+/*Paint Here 
+
+

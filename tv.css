@@ -1,0 +1,13 @@
+.tv-container {
+  position: absolute;
+  top: 600px;
+  left: 20px;
+  width: 60px;
+  height: 40px;
+}
+
+.tv-container canvas {
+  border: 8px solid #333;
+  border-radius: 12px;
+  transform: rotate(35deg);
+}
